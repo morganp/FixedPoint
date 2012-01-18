@@ -23,3 +23,8 @@ Checkout the examples folder, but here are a few:
 TODO
 ----
 
+
+LICENSE
+-------
+
+See the LICENSE file
