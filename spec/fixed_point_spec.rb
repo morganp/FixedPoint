@@ -23,11 +23,22 @@ describe FixedPoint do
     fixt.to_h.should      == "00000000"
     fixt.to_b.should      == "000000000000.00000000000000000000"
 end
+it "Integers 0 " do
+  format = FixedPoint::Format.new(1,8,0)
+  fixt   = FixedPoint::Number.new(7.0, format, "_")
+
+  fixt.source.should   == 7.0
+  fixt.to_f.should     == 7.0
+  fixt.to_i.should     == 7
+  fixt.fraction.should == 0.0
+  fixt.to_h.should     == "07"
+  fixt.to_b.should     == "00000111"
+end
 
 it "Different Decimal Mark _ instead of ." do
   format = FixedPoint::Format.new(1,12,20)
   fixt   = FixedPoint::Number.new(0, format, "_")
-  
+
   fixt.source.should   == 0.0
   fixt.to_f.should     == 0.0
   fixt.to_i.should     == 0
@@ -56,8 +67,54 @@ end
     lsbs = ""
     x.times { lsbs += "0" }
     fixt.to_b.should     == "000000000000.#{lsbs}"
-
+  end
 end
+
+it "Negative Integers -1 " do
+  format = FixedPoint::Format.new(1,4,0)
+  fixt   = FixedPoint::Number.new(-1.0, format, "_")
+
+  fixt.source.should   == -1.0
+  fixt.to_f.should     == -1.0
+  fixt.to_i.should     == -1
+  fixt.fraction.should == 0.0
+  fixt.to_h.should     == "f"
+  fixt.to_b.should     == "1111"
+end
+
+it "Negative Integers -2 " do
+  format = FixedPoint::Format.new(1,4,0)
+  fixt   = FixedPoint::Number.new(-2.0, format, "_")
+
+  fixt.source.should   == -2.0
+  fixt.to_f.should     == -2.0
+  fixt.to_i.should     == -2
+  fixt.fraction.should == 0.0
+  fixt.to_h.should     == "e"
+  fixt.to_b.should     == "1110"
+end
+
+it "Negative Integers -1.5 " do
+  format = FixedPoint::Format.new(1,4,4)
+  fixt   = FixedPoint::Number.new(-1.5, format, "_")
+
+  fixt.source.should   == -1.5
+  fixt.to_f.should     == -1.5
+  fixt.to_i.should     == -1
+  fixt.fraction.should == -0.5
+  fixt.to_h.should     == "e8"
+  fixt.to_b.should     == "1110_1000"
+end
+it "Negative Integers -2.25 " do
+  format = FixedPoint::Format.new(1,4,4)
+  fixt   = FixedPoint::Number.new(-2.25, format, "_")
+
+  fixt.source.should   == -2.25
+  fixt.to_f.should     == -2.25
+  fixt.to_i.should     == -2
+  fixt.fraction.should == -0.25
+  fixt.to_h.should     == "dc"
+  fixt.to_b.should     == "1101_1100"
 end
 
 it "Zero Fractional bits " do
@@ -73,22 +130,22 @@ it "Zero Fractional bits " do
 end
 
 
-  it "returns 2.5 for initalise of 2.5" do
-    fixt = FixedPoint::Number.new(2.5)
+it "returns 2.5 for initalise of 2.5" do
+  fixt = FixedPoint::Number.new(2.5)
 
-    fixt.source.should   == 2.5
-    fixt.to_f.should     == 2.5
-    fixt.to_i.should     == 2
-    fixt.fraction.should == 0.5
-    fixt.to_h.should     == "00280000"
-    fixt.to_b.should     == "000000000010.10000000000000000000"
+  fixt.source.should   == 2.5
+  fixt.to_f.should     == 2.5
+  fixt.to_i.should     == 2
+  fixt.fraction.should == 0.5
+  fixt.to_h.should     == "00280000"
+  fixt.to_b.should     == "000000000010.10000000000000000000"
   end
 
 
   it "Truncates Fractional numbers correctly" do
     format = FixedPoint::Format.new(1,12,1)
     fixt   = FixedPoint::Number.new(2.501, format)
-    
+
     fixt.source.should   == 2.501
     fixt.to_f.should     == 2.5
     fixt.to_i.should     == 2
@@ -210,7 +267,7 @@ end
   it "Forced Overflow  Large overflow" do
     format = FixedPoint::Format.new(1, 12, 4) 
     fixt   = FixedPoint::Number.new(-2**17, format, ".")
-    
+
 
     fixt.source.should    == -2**17
     fixt.to_f.should      == -2**11
@@ -225,7 +282,7 @@ end
 
   it "Creating via binary form 011_01" do
     fixt = FixedPoint::Number.new(0)
-    
+
     fixt.binary("011_01")
     fixt.source.should    == 3.25
     fixt.to_f.should      == 3.25
@@ -250,7 +307,7 @@ end
     fixt.overflow.should  == false
     fixt.underflow.should == false
   end
-  
+
   it "Creating Signed via binary form 1000_1" do
     fixt = FixedPoint::Number.new(0)
 
@@ -279,7 +336,7 @@ end
     fixt.overflow.should  == false
     fixt.underflow.should == false
   end
-  
+
   it "Creating Unsigned binary form 1000_1 using Fixdt datatype" do
     format = FixedPoint::Fixdt.new(0, 32, 20)  #Signed,width,frac_bits
     fixt   = FixedPoint::Number.new(0,format)
@@ -295,7 +352,7 @@ end
     fixt.underflow.should == false
   end
 
-#need overflow test
-#need underflow test
-#Integer only binary test
+  #need overflow test
+  #need underflow test
+  #Integer only binary test
 end
