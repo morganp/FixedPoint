@@ -74,7 +74,7 @@ module FixedPoint
           $1.reverse.each_char do |x|
             if x == "1"
               #If input is signed then MSB is negative
-              if ((index + 1) == @format.int_bits) and (@format.signed == 1)
+              if ((index + 1) == @format.int_bits) and (@format.signed?)
                 @source = @source + -2**index 
               else  
                 @source = @source + 2**index 
@@ -229,17 +229,8 @@ module FixedPoint
         @binary = ret_bin_int
       end
 
-      #############################################################################
-      ## HEX conversion ()
-      #############################################################################
-      #@hexadecimal = normalised.to_s(16)
-      #total_hex_chars = (@format.width+3)/4
-      #while (@hexadecimal.length < total_hex_chars)
-      #  @hexadecimal = "0" + @hexadecimal
-      #end
-
-      puts
-      puts "#{@number_int} . #{@number_frac}"
+      #puts
+      #puts "#{@number_int} . #{@number_frac}"
 
 
       # TODO Comment on what this is actually doing
@@ -253,23 +244,21 @@ module FixedPoint
         @number_int  = @number_int - @format.max_int_unsigned - 1
         @number_frac = 0
       end
-      puts "#{@number_int} . #{@number_frac}"
+      #puts "#{@number_int} . #{@number_frac}"
 
     end
 
     def hexadecimal
-      puts normalised
-      puts (@format.max_int_unsigned + normalised + 1).to_s(16)
-      if normalised < 0
-        @hexadecimal = (@format.max_int_unsigned + normalised + 1).to_s(16)
-      else  
-        @hexadecimal = normalised.to_s(16)
-      end
-      total_hex_chars = (@format.width+3)/4
-      while (@hexadecimal.length < total_hex_chars)
-        @hexadecimal = "0" + @hexadecimal
-      end
-      @hexadecimal   
+      #Clean Binary code (remove _ - . etc)
+      clean_binary = to_b.scan(/[01]/).join('')
+
+      #Convert to unsidnged int then to hex
+      hex          = clean_binary.to_i(2).to_s(16)
+      hex_chars    = (@format.width/4.0).ceil
+
+      ## Extend to the correct length
+      ## Negative numbers will already have MSBs this if for small +VE
+      @hexadecimal = hex.rjust(hex_chars, '0')
     end
 
     def normalised
