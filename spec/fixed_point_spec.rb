@@ -21,8 +21,9 @@ describe FixedPoint do
     fixt.to_i.should      == 0
     fixt.fraction.should  == 0.0
     fixt.to_h.should      == "00000000"
-    fixt.to_b.should      == "000000000000.00000000000000000000"
+    fixt.to_b.should      == "000000000000.00000000000000000000"  
 end
+
 it "Integers 0 " do
   format = FixedPoint::Format.new(1,8,0)
   fixt   = FixedPoint::Number.new(7.0, format, "_")
@@ -67,7 +68,7 @@ end
     lsbs = ""
     x.times { lsbs += "0" }
     fixt.to_b.should     == "000000000000.#{lsbs}"
-  end
+end
 end
 
 it "Negative Integers -1 " do
@@ -167,8 +168,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.0
     fixt.to_h.should      == "7"
     fixt.to_b.should      == "0111"
-    fixt.overflow.should  == true
-    fixt.underflow.should ==false
+    fixt.overflow?.should  == true
+    fixt.underflow?.should == false
   end
 
   it "Forced Overflow Zero Fractional bits " do
@@ -181,8 +182,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.0
     fixt.to_h.should      == "7ff"
     fixt.to_b.should      == "011111111111"
-    fixt.overflow.should  == true
-    fixt.underflow.should ==false
+    fixt.overflow?.should  == true
+    fixt.underflow?.should == false
   end
 
   it "Forced Overflow 4 Fractional bits " do
@@ -197,8 +198,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == max_fractional_value
     fixt.to_h.should      == "7fff"
     fixt.to_b.should      == "011111111111.1111"
-    fixt.overflow.should  == true
-    fixt.underflow.should == false
+    fixt.overflow?.should  == true
+    fixt.underflow?.should == false
   end
 
   it "Forced Overflow  Large overflow" do
@@ -214,8 +215,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == max_fractional_value
     fixt.to_h.should      == "7fff"
     fixt.to_b.should      == "011111111111.1111"
-    fixt.overflow.should  == true
-    fixt.underflow.should == false
+    fixt.overflow?.should  == true
+    fixt.underflow?.should == false
   end
 
   ##############################################
@@ -232,8 +233,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.0
     fixt.to_h.should      == "800"
     fixt.to_b.should      == "100000000000"
-    fixt.overflow.should  == false
-    fixt.underflow.should == false
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
   end
 
   it "Forced Overflow Zero Fractional bits " do
@@ -246,8 +247,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.0
     fixt.to_h.should      == "800"
     fixt.to_b.should      == "100000000000"
-    fixt.overflow.should  == false
-    fixt.underflow.should == true
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == true
   end
 
   it "Forced Overflow 4 Fractional bits " do
@@ -260,8 +261,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.0
     fixt.to_h.should      == "8000"
     fixt.to_b.should      == "100000000000.0000"
-    fixt.overflow.should  == false
-    fixt.underflow.should == true
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == true
   end
 
   it "Forced Overflow  Large overflow" do
@@ -275,8 +276,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.0
     fixt.to_h.should      == "8000"
     fixt.to_b.should      == "100000000000.0000"
-    fixt.overflow.should  == false
-    fixt.underflow.should == true
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == true
   end
 
 
@@ -290,8 +291,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.25
     fixt.to_h.should      == "0d"
     fixt.to_b.should      == "011_01"
-    fixt.overflow.should  == false
-    fixt.underflow.should == false
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
   end
 
   it "Creating via binary form 0_1" do
@@ -304,8 +305,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.5
     fixt.to_h.should      == "1"
     fixt.to_b.should      == "0_1"
-    fixt.overflow.should  == false
-    fixt.underflow.should == false
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
   end
 
   it "Creating Signed via binary form 1000_1" do
@@ -318,8 +319,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == -0.5
     fixt.to_h.should      == "11"
     fixt.to_b.should      == "1000_1"
-    fixt.overflow.should  == false
-    fixt.underflow.should == false
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
   end
 
   it "Creating Unsigned via binary form 1000_1" do
@@ -333,8 +334,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.5
     fixt.to_h.should      == "11"
     fixt.to_b.should      == "1000_1"
-    fixt.overflow.should  == false
-    fixt.underflow.should == false
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
   end
 
   it "Creating Unsigned binary form 1000_1 using Fixdt datatype" do
@@ -348,8 +349,8 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.fraction.should  == 0.5
     fixt.to_h.should      == "11"
     fixt.to_b.should      == "1000_1"
-    fixt.overflow.should  == false
-    fixt.underflow.should == false
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
   end
 
   #need overflow test
