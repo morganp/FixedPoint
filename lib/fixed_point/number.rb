@@ -4,9 +4,14 @@ module FixedPoint
     attr_reader :source
     attr_reader :format
 
-    #Flags
-    attr_reader :overflow
-    attr_reader :underflow
+    ## Number overflow/underflow flags 
+    def overflow?
+      @overflow
+    end
+
+    def underflow?
+      @underflow
+    end
 
 
     def bin(val="")
@@ -170,8 +175,8 @@ module FixedPoint
         @number_frac = (@source - @number_int)
       end
 
-      if @overflow == true
         if @format.signed == 1
+      if overflow?
           @number_int  = @format.max_int_signed
           @number_frac = @format.max_frac
         else
@@ -180,8 +185,8 @@ module FixedPoint
         end
       end
 
-      if @underflow == true
         if @format.signed == 1
+      if underflow?
           @number_int  = 2**(@format.int_bits-1)
           @number_frac = 0
         else
