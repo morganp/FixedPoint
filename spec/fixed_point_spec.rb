@@ -236,7 +236,7 @@ it "returns 2.5 for initalise of 2.5" do
   it "Creating via binary form 011_01" do
     fixt = FixedPoint::Number.new(0)
 
-    fixt.binary("011_01")
+    fixt.binary = "011_01"
     fixt.source.should    == 3.25
     fixt.to_f.should      == 3.25
     fixt.to_i.should      == 3
@@ -250,7 +250,7 @@ it "returns 2.5 for initalise of 2.5" do
   it "Creating via binary form 0_1" do
     fixt = FixedPoint::Number.new(0)
 
-    fixt.binary("0_1")
+    fixt.binary = "0_1"
     fixt.source.should    == 0.5
     fixt.to_f.should      == 0.5
     fixt.to_i.should      == 0
@@ -264,7 +264,7 @@ it "returns 2.5 for initalise of 2.5" do
   it "Creating Signed via binary form 1000_1" do
     fixt = FixedPoint::Number.new(0)
 
-    fixt.binary("1000_1")
+    fixt.binary = "1000_1"
     fixt.source.should    == -7.5
     fixt.to_f.should      == -7.5
     fixt.to_i.should      == -7
@@ -279,7 +279,7 @@ it "returns 2.5 for initalise of 2.5" do
     format = FixedPoint::Format.new(0, 12, 20) 
     fixt = FixedPoint::Number.new(0,format)
 
-    fixt.binary("1000_1")
+    fixt.binary = "1000_1"
     fixt.source.should    == 8.5
     fixt.to_f.should      == 8.5
     fixt.to_i.should      == 8
@@ -294,7 +294,7 @@ it "returns 2.5 for initalise of 2.5" do
     format = FixedPoint::Fixdt.new(0, 32, 20)  #Signed,width,frac_bits
     fixt   = FixedPoint::Number.new(0,format)
 
-    fixt.binary("1000_1")
+    fixt.binary = "1000_1"
     fixt.source.should    == 8.5
     fixt.to_f.should      == 8.5
     fixt.to_i.should      == 8
