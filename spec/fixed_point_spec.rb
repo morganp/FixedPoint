@@ -70,7 +70,7 @@ end
 end
 
 
-it "Zero Fractional bits " do
+it "Zero fractional bits " do
   format = FixedPoint::Format.new(1,12,0)
   fixt   = FixedPoint::Number.new(0, format, "_")
 
@@ -95,7 +95,7 @@ it "returns 2.5 for initalise of 2.5" do
   end
 
 
-  it "Truncates Fractional numbers correctly" do
+  it "Truncates fractional numbers correctly" do
     format = FixedPoint::Format.new(1,12,1)
     fixt   = FixedPoint::Number.new(2.501, format)
 
@@ -110,7 +110,7 @@ it "returns 2.5 for initalise of 2.5" do
   ##############################################
   ###   Overflow Section
   ##############################################
-  it "Forced Overflow 4 Int Bits, 0 Fractional bits " do
+  it "Forced Overflow 4 Int Bits, 0 fractional bits " do
     format = FixedPoint::Format.new(1, 4, 0)
     fixt   = FixedPoint::Number.new(2**3, format, "_")
 
@@ -124,7 +124,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.underflow?.should == false
   end
 
-  it "Forced Overflow Zero Fractional bits " do
+  it "Forced Overflow Zero fractional bits " do
     format = FixedPoint::Format.new(1, 12, 0)
     fixt   = FixedPoint::Number.new(2**11, format, "_")
 
@@ -138,7 +138,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.underflow?.should == false
   end
 
-  it "Forced Overflow 4 Fractional bits " do
+  it "Forced Overflow 4 fractional bits " do
     format = FixedPoint::Format.new(1, 12, 4) 
     fixt   = FixedPoint::Number.new(2**11, format, ".")
 
@@ -175,7 +175,7 @@ it "returns 2.5 for initalise of 2.5" do
   ###   Underflow Section
   ##############################################
   #Max Negative value
-  it "Forced Overflow Zero Fractional bits " do
+  it "Forced Overflow Zero fractional bits " do
     format = FixedPoint::Format.new(1, 12, 0) 
     fixt   = FixedPoint::Number.new(-2**11, format, "_")
 
@@ -189,7 +189,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.underflow?.should == false
   end
 
-  it "Forced Overflow Zero Fractional bits " do
+  it "Forced Overflow Zero fractional bits " do
     format = FixedPoint::Format.new(1, 12, 0) 
     fixt   = FixedPoint::Number.new(-2**11-1, format,"_")
 
@@ -203,7 +203,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.underflow?.should == true
   end
 
-  it "Forced Overflow 4 Fractional bits " do
+  it "Forced Overflow 4 fractional bits " do
     format = FixedPoint::Format.new(1, 12, 4) 
     fixt   = FixedPoint::Number.new(-2**11-1, format, ".")
 
