@@ -40,7 +40,7 @@ module FixedPoint
       @min_unsigned     = 0
 
       #Set Max/Min values
-      if @signed == 1
+      if signed?
         @max_value = @max_signed
         @min_value = @min_signed 
       else 
