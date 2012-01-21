@@ -14,6 +14,7 @@ module FixedPoint
     end
 
 
+    ## Methods to return number formats
     def bin(val="")
       return @binary
     end
@@ -57,7 +58,7 @@ module FixedPoint
       #decimal_mark = \2
       #frac_bits    = \3
 
-      unless text == ""
+      unless text.empty?
         if text.match(/([01]*)(.?)([01]*)/ )
           #Currently init forces @signed to 1 if not defined
           #but we should not override if already set
@@ -166,17 +167,16 @@ module FixedPoint
       @number_frac = @source - @number_int
 
 
-
       #Logic for fractional negative numbers is different
-      if ((@source < 0) and (not @number_frac==0))
+      if ((@source < 0) and @number_frac.nonzero? )
         #integer bits become 1 more negative
         @number_int  = Integer(@source)-1
         #The @fractional part inverts so int+frac = original number
         @number_frac = (@source - @number_int)
       end
 
-        if @format.signed == 1
       if overflow?
+        if @format.signed?
           @number_int  = @format.max_int_signed
           @number_frac = @format.max_frac
         else
@@ -185,8 +185,8 @@ module FixedPoint
         end
       end
 
-        if @format.signed == 1
       if underflow?
+        if @format.signed?
           @number_int  = 2**(@format.int_bits-1)
           @number_frac = 0
         else
@@ -257,7 +257,7 @@ module FixedPoint
       #Clean Binary code (remove _ - . etc)
       clean_binary = to_b.scan(/[01]/).join('')
 
-      #Convert to unsidnged int then to hex
+      #Convert to unsigned int then to hex
       hex          = clean_binary.to_i(2).to_s(16)
       hex_chars    = (@format.width/4.0).ceil
 
