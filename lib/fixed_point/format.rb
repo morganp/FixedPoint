@@ -19,7 +19,9 @@ module FixedPoint
       calculate_attributes(signed, int_bits, frac_bits)
     end
 
-
+    def signed?
+      (@signed == 1)
+    end
 
     #Format Should hold the maxim possible values
     #not part of number (Value)
