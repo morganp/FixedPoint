@@ -1,14 +1,12 @@
 require 'spec_helper'
 
-# def initialize(number, signed=1, int_bits=12, frac_bits=20, decimal_mark=".")
-# to_f float
-# to_i integer
-# fraction 
-# to_fixp fixedpoint
-# to_h hex
-# to_b binary
-#
-#
+# def initialize(number, Format.new(signed=1, int_bits=12, frac_bits=20), decimal_mark=".")
+# source Input Number 
+# to_f   quantised value as float
+# to_i   quantised value as integer
+# frac   fractional part of quantised value
+# to_h   quantised value as string formatted as hex
+# to_b   quantised value as string formatted as binary
 #
 
 describe FixedPoint do
@@ -19,7 +17,7 @@ describe FixedPoint do
     fixt.source.should    == 0.0
     fixt.to_f.should      == 0.0
     fixt.to_i.should      == 0
-    fixt.fraction.should  == 0.0
+    fixt.frac.should      == 0.0
     fixt.to_h.should      == "00000000"
     fixt.to_b.should      == "000000000000.00000000000000000000"  
 end
@@ -31,7 +29,7 @@ it "Integers 0 " do
   fixt.source.should   == 7.0
   fixt.to_f.should     == 7.0
   fixt.to_i.should     == 7
-  fixt.fraction.should == 0.0
+  fixt.frac.should     == 0.0
   fixt.to_h.should     == "07"
   fixt.to_b.should     == "00000111"
 end
@@ -43,7 +41,7 @@ it "Different Decimal Mark _ instead of ." do
   fixt.source.should   == 0.0
   fixt.to_f.should     == 0.0
   fixt.to_i.should     == 0
-  fixt.fraction.should == 0.0
+  fixt.frac.should     == 0.0
   fixt.to_h.should     == "00000000"
   fixt.to_b.should     == "000000000000_00000000000000000000"
 end
@@ -58,7 +56,7 @@ end
     fixt.source.should   == 0.0
     fixt.to_f.should     == 0.0
     fixt.to_i.should     == 0
-    fixt.fraction.should == 0.0
+    fixt.frac.should     == 0.0
     #Calculate hex length and fill with 0's
     hex = ""
     hex_length = ((x.to_f+int_bits.to_f)/4).ceil
@@ -125,7 +123,7 @@ it "Zero Fractional bits " do
   fixt.source.should   == 0.0
   fixt.to_f.should     == 0.0
   fixt.to_i.should     == 0
-  fixt.fraction.should == 0.0
+  fixt.frac.should == 0.0
   fixt.to_h.should     == "000"
   fixt.to_b.should     == "000000000000"
 end
@@ -137,7 +135,7 @@ it "returns 2.5 for initalise of 2.5" do
   fixt.source.should   == 2.5
   fixt.to_f.should     == 2.5
   fixt.to_i.should     == 2
-  fixt.fraction.should == 0.5
+  fixt.frac.should == 0.5
   fixt.to_h.should     == "00280000"
   fixt.to_b.should     == "000000000010.10000000000000000000"
   end
@@ -150,7 +148,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should   == 2.501
     fixt.to_f.should     == 2.5
     fixt.to_i.should     == 2
-    fixt.fraction.should == 0.5
+    fixt.frac.should == 0.5
     fixt.to_h.should     == "0005"
     fixt.to_b.should     == "000000000010.1"
   end
@@ -165,7 +163,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == 2**3
     fixt.to_f.should      == 2**3-1
     fixt.to_i.should      == 2**3-1
-    fixt.fraction.should  == 0.0
+    fixt.frac.should  == 0.0
     fixt.to_h.should      == "7"
     fixt.to_b.should      == "0111"
     fixt.overflow?.should  == true
@@ -179,7 +177,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == 2**11
     fixt.to_f.should      == 2**11-1
     fixt.to_i.should      == 2**11-1
-    fixt.fraction.should  == 0.0
+    fixt.frac.should      == 0.0
     fixt.to_h.should      == "7ff"
     fixt.to_b.should      == "011111111111"
     fixt.overflow?.should  == true
@@ -195,7 +193,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == 2**11
     fixt.to_f.should      == 2**11 -1 + max_fractional_value
     fixt.to_i.should      == 2**11 -1
-    fixt.fraction.should  == max_fractional_value
+    fixt.frac.should      == max_fractional_value
     fixt.to_h.should      == "7fff"
     fixt.to_b.should      == "011111111111.1111"
     fixt.overflow?.should  == true
@@ -212,7 +210,7 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.to_f.should      == 2**11 -1 + max_fractional_value
     fixt.to_i.should      == 2**11 -1
-    fixt.fraction.should  == max_fractional_value
+    fixt.frac.should      == max_fractional_value
     fixt.to_h.should      == "7fff"
     fixt.to_b.should      == "011111111111.1111"
     fixt.overflow?.should  == true
@@ -230,7 +228,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == -2**11
     fixt.to_f.should      == -2**11
     fixt.to_i.should      == -2**11
-    fixt.fraction.should  == 0.0
+    fixt.frac.should      == 0.0
     fixt.to_h.should      == "800"
     fixt.to_b.should      == "100000000000"
     fixt.overflow?.should  == false
@@ -244,7 +242,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == -2**11-1
     fixt.to_f.should      == -2**11
     fixt.to_i.should      == -2**11
-    fixt.fraction.should  == 0.0
+    fixt.frac.should      == 0.0
     fixt.to_h.should      == "800"
     fixt.to_b.should      == "100000000000"
     fixt.overflow?.should  == false
@@ -258,7 +256,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == -2**11-1
     fixt.to_f.should      == -2**11
     fixt.to_i.should      == -2**11
-    fixt.fraction.should  == 0.0
+    fixt.frac.should      == 0.0
     fixt.to_h.should      == "8000"
     fixt.to_b.should      == "100000000000.0000"
     fixt.overflow?.should  == false
@@ -273,7 +271,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == -2**17
     fixt.to_f.should      == -2**11
     fixt.to_i.should      == -2**11
-    fixt.fraction.should  == 0.0
+    fixt.frac.should      == 0.0
     fixt.to_h.should      == "8000"
     fixt.to_b.should      == "100000000000.0000"
     fixt.overflow?.should  == false
@@ -288,7 +286,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == 3.25
     fixt.to_f.should      == 3.25
     fixt.to_i.should      == 3
-    fixt.fraction.should  == 0.25
+    fixt.frac.should      == 0.25
     fixt.to_h.should      == "0d"
     fixt.to_b.should      == "011_01"
     fixt.overflow?.should  == false
@@ -302,7 +300,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == 0.5
     fixt.to_f.should      == 0.5
     fixt.to_i.should      == 0
-    fixt.fraction.should  == 0.5
+    fixt.frac.should      == 0.5
     fixt.to_h.should      == "1"
     fixt.to_b.should      == "0_1"
     fixt.overflow?.should  == false
@@ -316,7 +314,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == -7.5
     fixt.to_f.should      == -7.5
     fixt.to_i.should      == -7
-    fixt.fraction.should  == -0.5
+    fixt.frac.should      == -0.5
     fixt.to_h.should      == "11"
     fixt.to_b.should      == "1000_1"
     fixt.overflow?.should  == false
@@ -331,7 +329,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == 8.5
     fixt.to_f.should      == 8.5
     fixt.to_i.should      == 8
-    fixt.fraction.should  == 0.5
+    fixt.frac.should      == 0.5
     fixt.to_h.should      == "11"
     fixt.to_b.should      == "1000_1"
     fixt.overflow?.should  == false
@@ -346,7 +344,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.source.should    == 8.5
     fixt.to_f.should      == 8.5
     fixt.to_i.should      == 8
-    fixt.fraction.should  == 0.5
+    fixt.frac.should      == 0.5
     fixt.to_h.should      == "11"
     fixt.to_b.should      == "1000_1"
     fixt.overflow?.should  == false

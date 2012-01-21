@@ -45,8 +45,12 @@ module FixedPoint
 
     # Method returns fractional section of fixed point type
     # not a to_ method as it is not representative of the whole number
+    def frac
+      (@quantised - to_i)
+    end
+
     def fraction
-      return @number_frac
+      frac
     end
 
     # Method to set binary value
