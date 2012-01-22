@@ -82,21 +82,21 @@ module FixedPoint
     ####################################
     def binary
       #Take signed quantised value and create binary string
-      if (@quantised < 0) and fraction.nonzero?
+      if (@quantised < 0) and frac.nonzero?
         # Fractional numbers not negative
         # So the integer part is 1 less than other wise would be and add 1+frac
         ret_bin_int = (@format.max_int_unsigned + to_i  )
-        frac_value  = 1 + fraction
+        frac_value  = 1 + frac
       end
 
-      if (@quantised < 0) and fraction.zero?
+      if (@quantised < 0) and frac.zero?
         ret_bin_int = (@format.max_int_unsigned + to_i + 1 )
-        frac_value  = fraction
+        frac_value  = frac
       end
 
       if @quantised >= 0
         ret_bin_int = self.to_i
-        frac_value  = fraction
+        frac_value  = frac
       end
 
       ## Convert to binary String and extend to correct length
