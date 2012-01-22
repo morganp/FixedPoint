@@ -1,6 +1,11 @@
 HISTORY/Changelog
 =================
 
+0.1.1
+-----
+
+ Depreciated .fraction method, use .frac instead
+
 0.1.0
 -----
 
