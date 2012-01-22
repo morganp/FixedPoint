@@ -77,10 +77,6 @@ module FixedPoint
       (@quantised - to_i)
     end
 
-    def fraction
-      frac
-    end
-    
     ####################################
     ### Calculate Binary format
     ####################################
