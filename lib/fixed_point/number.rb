@@ -13,9 +13,6 @@ module FixedPoint
     ############################################
 
 
-    ####################################
-    ### Init
-    ####################################
     def initialize(number, input_format=Format.new(1,12,20), decimal_mark=".")
       @source       = number
       @format       = input_format
@@ -28,12 +25,15 @@ module FixedPoint
     end
 
     ####################################
-    ### Number overflow/underflow flags 
+    ### Numerical overflow flag 
     ####################################
     def overflow?
       @overflow
     end
 
+    ####################################
+    ### Numerical underflow flag 
+    ####################################
     def underflow?
       @underflow
     end
@@ -41,36 +41,38 @@ module FixedPoint
     ####################################
     ### Methods to return number formats
     ####################################
+
+    # Alias for binary.
     def bin
       binary
     end
 
+    # Alias for hexadecimal.
     def hex
       hexadecimal
     end
 
-    #To Binary form
+    # Alias for binary.
     def to_b
       binary
     end
 
-    #To Hexadecimal form
+    # Alias for hexadecimal.
     def to_h
       hexadecimal
     end
 
-    #To Floating Point form, quantised version of _source_
+    #Floating Point form of the quantised value.
     def to_f
       @quantised
     end
 
-    #To Integer, limited integer part of _source_ 
+    #Integer, integer part of quantised value.
     def to_i
       @quantised.to_i
     end
 
-    # Method returns fractional section of fixed point type
-    # not a to_ method as it is not representative of the whole number
+    # Fractional section of quantised value.
     def frac
       (@quantised - to_i)
     end
@@ -80,7 +82,7 @@ module FixedPoint
     end
     
     ####################################
-    ### Methods to calculate formats
+    ### Calculate Binary format
     ####################################
     def binary
       #Take signed quantised value and create binary string
@@ -118,6 +120,9 @@ module FixedPoint
       return binary_string
     end 
 
+    ####################################
+    ### Calculate Hexadecimal format
+    ####################################
     def hexadecimal
       #Clean Binary code (remove _ - . etc)
       clean_binary = to_b.scan(/[01]/).join('')
