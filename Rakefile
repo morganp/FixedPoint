@@ -64,7 +64,7 @@ namespace :deploy do
 
   task :push_gem do
     puts "Pushing Gem #{name}-#{version}"
-    #`gem push`
+    `gem push #{name}-#{version}.gem`
     unless $?.success?
         $stderr.puts "Gem Push Failed"
         exit -1
@@ -73,7 +73,7 @@ namespace :deploy do
 
   task :create_git_tag do
     puts "Tagging #{name}-#{version}"
-    #`git tag -a #{version} -m 'Tagging gem release #{version}'`
+    `git tag -a #{version} -m 'Tagging gem release #{version}'`
     unless $?.success?
         $stderr.puts "Tagging Git Failed"
         exit -1
@@ -82,7 +82,7 @@ namespace :deploy do
 
   task :push_tag do
     puts "Push Tag #{version}"
-    #`git push origin #{version}`
+    `git push origin #{version}`
     unless $?.success?
         $stderr.puts "Pushing Git Tag Failed"
         exit -1
