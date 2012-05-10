@@ -77,6 +77,10 @@ module FixedPoint
       (@quantised - to_i)
     end
 
+    def to_s
+      to_f.to_s
+    end
+
     ####################################
     ### Calculate Binary format
     ####################################

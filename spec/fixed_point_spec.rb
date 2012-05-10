@@ -16,6 +16,7 @@ describe FixedPoint do
 
     fixt.source.should    == 0.0
     fixt.to_f.should      == 0.0
+    fixt.to_s.should      == "0.0"
     fixt.to_i.should      == 0
     fixt.frac.should      == 0.0
     fixt.to_h.should      == "00000000"
@@ -28,6 +29,7 @@ it "Integers 0 " do
 
   fixt.source.should   == 7.0
   fixt.to_f.should     == 7.0
+  fixt.to_s.should     == "7.0"
   fixt.to_i.should     == 7
   fixt.frac.should     == 0.0
   fixt.to_h.should     == "07"
@@ -40,6 +42,7 @@ it "Different Decimal Mark _ instead of ." do
 
   fixt.source.should   == 0.0
   fixt.to_f.should     == 0.0
+  fixt.to_s.should     == "0.0"
   fixt.to_i.should     == 0
   fixt.frac.should     == 0.0
   fixt.to_h.should     == "00000000"
@@ -55,6 +58,7 @@ end
 
     fixt.source.should   == 0.0
     fixt.to_f.should     == 0.0
+    fixt.to_s.should     == "0.0"
     fixt.to_i.should     == 0
     fixt.frac.should     == 0.0
     #Calculate hex length and fill with 0's
@@ -76,8 +80,9 @@ it "Zero fractional bits " do
 
   fixt.source.should   == 0.0
   fixt.to_f.should     == 0.0
+  fixt.to_s.should     == "0.0"
   fixt.to_i.should     == 0
-  fixt.frac.should == 0.0
+  fixt.frac.should     == 0.0
   fixt.to_h.should     == "000"
   fixt.to_b.should     == "000000000000"
 end
@@ -88,8 +93,9 @@ it "returns 2.5 for initalise of 2.5" do
 
   fixt.source.should   == 2.5
   fixt.to_f.should     == 2.5
+  fixt.to_s.should     == "2.5"
   fixt.to_i.should     == 2
-  fixt.frac.should == 0.5
+  fixt.frac.should     == 0.5
   fixt.to_h.should     == "00280000"
   fixt.to_b.should     == "000000000010.10000000000000000000"
   end
@@ -101,8 +107,9 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.source.should   == 2.501
     fixt.to_f.should     == 2.5
+    fixt.to_s.should     == "2.5"
     fixt.to_i.should     == 2
-    fixt.frac.should == 0.5
+    fixt.frac.should     == 0.5
     fixt.to_h.should     == "0005"
     fixt.to_b.should     == "000000000010.1"
   end
@@ -114,12 +121,13 @@ it "returns 2.5 for initalise of 2.5" do
     format = FixedPoint::Format.new(1, 4, 0)
     fixt   = FixedPoint::Number.new(2**3, format, "_")
 
-    fixt.source.should    == 2**3
-    fixt.to_f.should      == 2**3-1
-    fixt.to_i.should      == 2**3-1
-    fixt.frac.should  == 0.0
-    fixt.to_h.should      == "7"
-    fixt.to_b.should      == "0111"
+    fixt.source.should     == 2**3
+    fixt.to_f.should       == 2**3-1
+    fixt.to_s.should       == "7.0"
+    fixt.to_i.should       == 2**3-1
+    fixt.frac.should       == 0.0
+    fixt.to_h.should       == "7"
+    fixt.to_b.should       == "0111"
     fixt.overflow?.should  == true
     fixt.underflow?.should == false
   end
@@ -130,6 +138,7 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.source.should    == 2**11
     fixt.to_f.should      == 2**11-1
+    fixt.to_s.should      == "2047.0"
     fixt.to_i.should      == 2**11-1
     fixt.frac.should      == 0.0
     fixt.to_h.should      == "7ff"
@@ -146,6 +155,7 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.source.should    == 2**11
     fixt.to_f.should      == 2**11 -1 + max_fractional_value
+    fixt.to_s.should      == "2047.9375"
     fixt.to_i.should      == 2**11 -1
     fixt.frac.should      == max_fractional_value
     fixt.to_h.should      == "7fff"
@@ -163,6 +173,7 @@ it "returns 2.5 for initalise of 2.5" do
     max_fractional_value = (1.0/2) + (1.0/4) + (1.0/8) + (1.0/16)
 
     fixt.to_f.should      == 2**11 -1 + max_fractional_value
+    fixt.to_s.should      == "2047.9375"
     fixt.to_i.should      == 2**11 -1
     fixt.frac.should      == max_fractional_value
     fixt.to_h.should      == "7fff"
@@ -181,6 +192,7 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.source.should    == -2**11
     fixt.to_f.should      == -2**11
+    fixt.to_s.should      == "-2048"
     fixt.to_i.should      == -2**11
     fixt.frac.should      == 0.0
     fixt.to_h.should      == "800"
@@ -195,6 +207,7 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.source.should    == -2**11-1
     fixt.to_f.should      == -2**11
+    fixt.to_s.should      == "-2048"
     fixt.to_i.should      == -2**11
     fixt.frac.should      == 0.0
     fixt.to_h.should      == "800"
@@ -209,6 +222,7 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.source.should    == -2**11-1
     fixt.to_f.should      == -2**11
+    fixt.to_s.should      == "-2048"
     fixt.to_i.should      == -2**11
     fixt.frac.should      == 0.0
     fixt.to_h.should      == "8000"
@@ -224,6 +238,7 @@ it "returns 2.5 for initalise of 2.5" do
 
     fixt.source.should    == -2**17
     fixt.to_f.should      == -2**11
+    fixt.to_s.should      == "-2048"
     fixt.to_i.should      == -2**11
     fixt.frac.should      == 0.0
     fixt.to_h.should      == "8000"
@@ -239,6 +254,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.binary = "011_01"
     fixt.source.should    == 3.25
     fixt.to_f.should      == 3.25
+    fixt.to_s.should      == "3.25"
     fixt.to_i.should      == 3
     fixt.frac.should      == 0.25
     fixt.to_h.should      == "0d"
@@ -253,6 +269,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.binary = "0_1"
     fixt.source.should    == 0.5
     fixt.to_f.should      == 0.5
+    fixt.to_s.should      == "0.5"
     fixt.to_i.should      == 0
     fixt.frac.should      == 0.5
     fixt.to_h.should      == "1"
@@ -267,6 +284,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.binary = "1000_1"
     fixt.source.should    == -7.5
     fixt.to_f.should      == -7.5
+    fixt.to_s.should      == "-7.5"
     fixt.to_i.should      == -7
     fixt.frac.should      == -0.5
     fixt.to_h.should      == "11"
@@ -282,6 +300,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.binary = "1000_1"
     fixt.source.should    == 8.5
     fixt.to_f.should      == 8.5
+    fixt.to_s.should      == "8.5"
     fixt.to_i.should      == 8
     fixt.frac.should      == 0.5
     fixt.to_h.should      == "11"
@@ -297,6 +316,7 @@ it "returns 2.5 for initalise of 2.5" do
     fixt.binary = "1000_1"
     fixt.source.should    == 8.5
     fixt.to_f.should      == 8.5
+    fixt.to_s.should      == "8.5"
     fixt.to_i.should      == 8
     fixt.frac.should      == 0.5
     fixt.to_h.should      == "11"
