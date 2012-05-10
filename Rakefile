@@ -24,11 +24,6 @@ namespace :deploy do
     line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
   end
 
-  #Dir.chdir( './lib/')
-  #puts require NAME
-  #Dir.chdir( './../')
-
-
   desc 'Run Spec'
   #file_list = FileList['spec/*_spec.rb']
   html_path = "spec_results.html"  
