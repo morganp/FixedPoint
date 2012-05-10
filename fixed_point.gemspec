@@ -1,9 +1,7 @@
 
 NAME="fixed_point"
+require File.join( File.dirname(__FILE__), 'lib', NAME )
 
-Dir.chdir( './lib/')
-puts require NAME
-Dir.chdir( './../')
 
 spec = Gem::Specification.new do |s|
    s.name         = NAME
