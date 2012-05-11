@@ -4,7 +4,7 @@ HISTORY/Changelog
 0.2.0
 -----
 
-  Added to_s method on numbers. Output is now the same as calling .to_f.to_s
+ Added to_s method on numbers. Output is now the same as calling .to_f.to_s
 
 0.1.1
 -----
