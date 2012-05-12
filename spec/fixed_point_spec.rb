@@ -21,83 +21,83 @@ describe FixedPoint do
     fixt.frac.should      == 0.0
     fixt.to_h.should      == "00000000"
     fixt.to_b.should      == "000000000000.00000000000000000000"  
-end
+  end
 
-it "Integers 0 " do
-  format = FixedPoint::Format.new(1,8,0)
-  fixt   = FixedPoint::Number.new(7.0, format, "_")
+  it "Integers 0 " do
+    format = FixedPoint::Format.new(1,8,0)
+    fixt   = FixedPoint::Number.new(7.0, format, "_")
 
-  fixt.source.should   == 7.0
-  fixt.to_f.should     == 7.0
-  fixt.to_s.should     == "7.0"
-  fixt.to_i.should     == 7
-  fixt.frac.should     == 0.0
-  fixt.to_h.should     == "07"
-  fixt.to_b.should     == "00000111"
-end
+    fixt.source.should   == 7.0
+    fixt.to_f.should     == 7.0
+    fixt.to_s.should     == "7.0"
+    fixt.to_i.should     == 7
+    fixt.frac.should     == 0.0
+    fixt.to_h.should     == "07"
+    fixt.to_b.should     == "00000111"
+  end
 
-it "Different Decimal Mark _ instead of ." do
-  format = FixedPoint::Format.new(1,12,20)
-  fixt   = FixedPoint::Number.new(0, format, "_")
-
-  fixt.source.should   == 0.0
-  fixt.to_f.should     == 0.0
-  fixt.to_s.should     == "0.0"
-  fixt.to_i.should     == 0
-  fixt.frac.should     == 0.0
-  fixt.to_h.should     == "00000000"
-  fixt.to_b.should     == "000000000000_00000000000000000000"
-end
-
-(1...20).to_a.reverse_each do |x|
-  int_bits = 12
-  it "Returns 0.0 for initalise of 0 with #{x} fractional bits" do
-    format = FixedPoint::Format.new(1, int_bits, x)
-    fixt   = FixedPoint::Number.new(0, format)
-    #fixt = FixedPoint::Number.new(0,1,int_bits,x)
+  it "Different Decimal Mark _ instead of ." do
+    format = FixedPoint::Format.new(1,12,20)
+    fixt   = FixedPoint::Number.new(0, format, "_")
 
     fixt.source.should   == 0.0
     fixt.to_f.should     == 0.0
     fixt.to_s.should     == "0.0"
     fixt.to_i.should     == 0
     fixt.frac.should     == 0.0
-    #Calculate hex length and fill with 0's
-    hex = ""
-    hex_length = ((x.to_f+int_bits.to_f)/4).ceil
-    hex_length.times { hex += "0" }
-    fixt.to_h.should     == hex
-    #Calculate binary fractional length and fill with 0's
-    lsbs = ""
-    x.times { lsbs += "0" }
-    fixt.to_b.should     == "000000000000.#{lsbs}"
-end
-end
+    fixt.to_h.should     == "00000000"
+    fixt.to_b.should     == "000000000000_00000000000000000000"
+  end
+
+  (1...20).to_a.reverse_each do |x|
+    int_bits = 12
+    it "Returns 0.0 for initalise of 0 with #{x} fractional bits" do
+      format = FixedPoint::Format.new(1, int_bits, x)
+      fixt   = FixedPoint::Number.new(0, format)
+      #fixt = FixedPoint::Number.new(0,1,int_bits,x)
+
+      fixt.source.should   == 0.0
+      fixt.to_f.should     == 0.0
+      fixt.to_s.should     == "0.0"
+      fixt.to_i.should     == 0
+      fixt.frac.should     == 0.0
+      #Calculate hex length and fill with 0's
+      hex = ""
+      hex_length = ((x.to_f+int_bits.to_f)/4).ceil
+      hex_length.times { hex += "0" }
+      fixt.to_h.should     == hex
+      #Calculate binary fractional length and fill with 0's
+      lsbs = ""
+      x.times { lsbs += "0" }
+      fixt.to_b.should     == "000000000000.#{lsbs}"
+    end
+  end
 
 
-it "Zero fractional bits " do
-  format = FixedPoint::Format.new(1,12,0)
-  fixt   = FixedPoint::Number.new(0, format, "_")
+  it "Zero fractional bits " do
+    format = FixedPoint::Format.new(1,12,0)
+    fixt   = FixedPoint::Number.new(0, format, "_")
 
-  fixt.source.should   == 0.0
-  fixt.to_f.should     == 0.0
-  fixt.to_s.should     == "0.0"
-  fixt.to_i.should     == 0
-  fixt.frac.should     == 0.0
-  fixt.to_h.should     == "000"
-  fixt.to_b.should     == "000000000000"
-end
+    fixt.source.should   == 0.0
+    fixt.to_f.should     == 0.0
+    fixt.to_s.should     == "0.0"
+    fixt.to_i.should     == 0
+    fixt.frac.should     == 0.0
+    fixt.to_h.should     == "000"
+    fixt.to_b.should     == "000000000000"
+  end
 
 
-it "returns 2.5 for initalise of 2.5" do
-  fixt = FixedPoint::Number.new(2.5)
+  it "returns 2.5 for initalise of 2.5" do
+    fixt = FixedPoint::Number.new(2.5)
 
-  fixt.source.should   == 2.5
-  fixt.to_f.should     == 2.5
-  fixt.to_s.should     == "2.5"
-  fixt.to_i.should     == 2
-  fixt.frac.should     == 0.5
-  fixt.to_h.should     == "00280000"
-  fixt.to_b.should     == "000000000010.10000000000000000000"
+    fixt.source.should   == 2.5
+    fixt.to_f.should     == 2.5
+    fixt.to_s.should     == "2.5"
+    fixt.to_i.should     == 2
+    fixt.frac.should     == 0.5
+    fixt.to_h.should     == "00280000"
+    fixt.to_b.should     == "000000000010.10000000000000000000"
   end
 
 
