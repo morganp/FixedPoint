@@ -154,42 +154,71 @@ module FixedPoint
         #  Do not change the Signed format as can not detect that from bit pattern
         @format = Format.new(@format.signed, int_bits, frac_bits)
 
-        ###########################
-        ### Routine to generate source from binary
-        ###########################
-        @source  = 0.0
-        index    = 0
-        set_int.reverse.each_char do |x|
-          if x == "1"
-            #If input is signed then MSB is negative
-            if ((index + 1) == @format.int_bits) and (@format.signed?)
-              @source = @source + -2**index 
-            else  
-              @source = @source + 2**index 
-            end
-          end
-          index = index + 1
-        end
-
-        index = 1
-        set_frac.each_char do |x|
-          if x == "1"
-            @source = @source + 2**-index
-          end
-          index = index + 1
-        end
-        ################################
+        @source  = binary_to_float( set_int, set_frac)
         
         ## Set the Quantised value
         @quantised = @source
 
         return binary
       else 
-        puts "ERROR invalid input binary\(#{text}\)"
+        $stderr.puts "ERROR invalid binary input \(#{text}\)"
         return nil
       end
     end
 
+    ## TODO this feature for version 0.2.1
+    def hex=( text )
+     
+      ## Hex numbers do not get delimited
+
+      ## Strip leading \d+'h (Verilog denominator)
+      
+      # bin= resets the wordlength
+      # This should not be done for hex as the exact wordlength can not be calculated
+      #if text.match(/([0-9a-fA-F]*)(.?)([0-9a-fA-F]*)/ )
+        #set_int       = $1
+        #int_bits      = $1.size * 4
+        #@decimal_mark = $2
+        #set_frac      = $3
+        #frac_bits     = $3.size * 4
+        #Change from hex to binary bit pattern
+        #set_int  = set_int.to_i(16).to_s(2)
+        #set_frac = set_frac.to_i(16).to_s(2)
+      
+      if text.match(/(0x)?([0-9a-fA-F]*)/ )
+        binary_bits = $2.to_i(16).to_s(2)
+
+        #Ensure min length (for reliability manipulating string)
+        binary_bits = binary_bits.rjust(@format.int_bits, "0")
+        if @format.frac_bits > 0
+          set_frac = binary_bits[-@format.frac_bits, @format.frac_bits]
+        else
+          set_frac = ""
+        end
+        
+        set_int  = binary_bits[-(@format.width)..-(@format.frac_bits+1)]
+
+        ## Was the input word length too Long
+        #oversized_bits = binary_bits.size - @format.width 
+        #if oversized_bits > 0
+        #  puts "Oversized Hex Value"
+        #  puts "Extra bits #{oversized_bits}"
+        #  puts "The extra bits binary_bits #{binary_bits[0,oversized_bits]} MSB was #{binary_bits[oversized_bits]}"
+        #end
+
+        @source    = binary_to_float( set_int, set_frac )
+        @quantised = @source
+
+      else
+        $stderr.puts "ERROR invalid hex input \(#{text}\)"
+        return nil
+      end
+    end
+
+
+    #TODO
+    #def log
+    #def log2
 
     def warnings( val=true )
       @warnings = val
@@ -290,13 +319,39 @@ module FixedPoint
 
 
 
+    ##
+    def binary_to_float(int_part, frac_part ) 
+      index    = 0
+      value    = 0.0
+      int_part.reverse.each_char do |x|
+        if x == "1"
+          #If input is signed then MSB is negative
+          if ((index + 1) == @format.int_bits) and (@format.signed?)
+            value = value + -2**index 
+          else  
+            value = value + 2**index 
+          end
+        end
+        index = index + 1
+      end
+
+      index = 1
+      frac_part.each_char do |x|
+        if x == "1"
+          value = value + 2**-index
+        end
+        index = index + 1
+      end
+
+      return value
+    end
 
    
     ## Taking methd out until covered by tests
     #def normalised
     #  #This use to be only for positive numbers
     #
-    #  # This function shiftes the fixedpoint number 
+    #  # This function shifts the fixedpoint number 
     #  #   so it can be represented as an integer.
     #  return  Integer((@quantised)*(2**@format.frac_bits))
     #end

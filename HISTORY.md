@@ -1,6 +1,11 @@
 HISTORY/Changelog
 =================
 
+0.2.1
+-----
+
+ Added hex= method for setting fixed point data via hex
+
 0.2.0
 -----
 
