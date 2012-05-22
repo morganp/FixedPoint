@@ -226,6 +226,14 @@ module FixedPoint
 
     private
 
+    def all_bits_the_same( bin_string )
+      word = bin_string.split('')
+      all_one = word.all?{|x| x == '1' }
+      all_zero = word.all?{|x| x == '0' }
+      return  (all_one || all_zero)
+    end
+
+    
     def check_for_overflow_underflow( source, format)
       overflow  = false
       underflow = false
