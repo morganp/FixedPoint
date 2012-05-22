@@ -355,7 +355,7 @@ module FixedPoint
     end
 
    
-    ## Taking methd out until covered by tests
+    ## Taking method out until covered by tests
     #def normalised
     #  #This use to be only for positive numbers
     #
