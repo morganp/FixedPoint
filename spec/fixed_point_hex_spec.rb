@@ -81,7 +81,7 @@ describe FixedPoint do
     fixt.underflow?.should == false
   end
 
-  it "hex= should ignore masb past word length" do
+  it "hex= should ignore msb past word length" do
     format = FixedPoint::Format.new(1, 4, 4)
     fixt   = FixedPoint::Number.new(0, format)
     
@@ -96,6 +96,75 @@ describe FixedPoint do
     fixt.overflow?.should  == false
     fixt.underflow?.should == false
   end
+  
+  it "hex= should ignore truncated MSBs, 0 padded" do
+    format = FixedPoint::Format.new(0, 6, 0)
+    fixt   = FixedPoint::Number.new(0, format)
+    
+    fixt.hex = "00"
+    fixt.source.should    == 0.0
+    fixt.to_f.should      == 0.0
+    fixt.to_s.should      == "0.0"
+    fixt.to_i.should      == 0
+    fixt.frac.should      == 0.0
+    fixt.to_h.should      == "00"
+    fixt.to_b.should      == "000000"
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
+  end
+  it "hex= should ignore truncated MSBs, 1 padded" do
+    format = FixedPoint::Format.new(0, 6, 0)
+    fixt   = FixedPoint::Number.new(0, format)
+    
+    fixt.hex = "C0"
+    fixt.source.should    == 0.0
+    fixt.to_f.should      == 0.0
+    fixt.to_s.should      == "0.0"
+    fixt.to_i.should      == 0
+    fixt.frac.should      == 0.0
+    fixt.to_h.should      == "00"
+    fixt.to_b.should      == "000000"
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
+  end
+  
+  it "hex= should catch data in truncated MSBs" do
+    format = FixedPoint::Format.new(0, 6, 0)
+    fixt   = FixedPoint::Number.new(0, format)
+    
+    error = %{Error using hex=40, format is 6, truncated data is 01\n  The MSBs seem to contain data they are not just 0 or 1 padded}
+    $stderr.should_receive(:puts).with( error ) 
+    fixt.hex = "40"
+
+    fixt.source.should    == 0.0
+    fixt.to_f.should      == 0.0
+    fixt.to_s.should      == "0.0"
+    fixt.to_i.should      == 0
+    fixt.frac.should      == 0.0
+    fixt.to_h.should      == "00"
+    fixt.to_b.should      == "000000"
+    fixt.overflow?.should  == false
+    fixt.underflow?.should == false
+  end
+
+  #it "hex= should catch data in truncated MSBs" do
+  #  format = FixedPoint::Format.new(0, 6, 0)
+  #  fixt   = FixedPoint::Number.new(0, format)
+  #  
+  #  error = %{Error using hex=80, format is 6, truncated data is 10\n  The MSBs seem to contain data they are not just 0 or 1 padded}
+  #  $stderr.should_receive(:puts).with( error ) 
+  #  fixt.hex = "80"
+
+  #  fixt.source.should    == 0.0
+  #  fixt.to_f.should      == 0.0
+  #  fixt.to_s.should      == "0.0"
+  #  fixt.to_i.should      == 0
+  #  fixt.frac.should      == 0.0
+  #  fixt.to_h.should      == "00"
+  #  fixt.to_b.should      == "000000"
+  #  fixt.overflow?.should  == false
+  #  fixt.underflow?.should == false
+  #end
 
   it "Bin= check 0x removal " do
     format = FixedPoint::Format.new(1, 4, 4)

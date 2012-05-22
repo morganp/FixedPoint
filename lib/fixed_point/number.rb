@@ -168,28 +168,17 @@ module FixedPoint
 
     ## TODO this feature for version 0.2.1
     def hex=( text )
-     
       ## Hex numbers do not get delimited
-
-      ## Strip leading \d+'h (Verilog denominator)
-      
-      # bin= resets the wordlength
-      # This should not be done for hex as the exact wordlength can not be calculated
-      #if text.match(/([0-9a-fA-F]*)(.?)([0-9a-fA-F]*)/ )
-        #set_int       = $1
-        #int_bits      = $1.size * 4
-        #@decimal_mark = $2
-        #set_frac      = $3
-        #frac_bits     = $3.size * 4
-        #Change from hex to binary bit pattern
-        #set_int  = set_int.to_i(16).to_s(2)
-        #set_frac = set_frac.to_i(16).to_s(2)
+      ## TODO Strip leading \d+'h (Verilog denominator)
       
       if text.match(/(0x)?([0-9a-fA-F]*)/ )
+        # Convert Hex to integer
+        #   integer to binary string
         binary_bits = $2.to_i(16).to_s(2)
-
+        
         #Ensure min length (for reliability manipulating string)
-        binary_bits = binary_bits.rjust(@format.int_bits, "0")
+        binary_bits = binary_bits.rjust(text.size*4, '0')
+       
         if @format.frac_bits > 0
           set_frac = binary_bits[-@format.frac_bits, @format.frac_bits]
         else
@@ -199,12 +188,17 @@ module FixedPoint
         set_int  = binary_bits[-(@format.width)..-(@format.frac_bits+1)]
 
         ## Was the input word length too Long
-        #oversized_bits = binary_bits.size - @format.width 
-        #if oversized_bits > 0
-        #  puts "Oversized Hex Value"
-        #  puts "Extra bits #{oversized_bits}"
-        #  puts "The extra bits binary_bits #{binary_bits[0,oversized_bits]} MSB was #{binary_bits[oversized_bits]}"
-        #end
+        oversized_bits = binary_bits.size - @format.width 
+        if oversized_bits > 0
+          # give a semantic name to the discarded bits
+          discarded_bits = binary_bits[0,oversized_bits]
+
+          #If data (mix of 1 and 0) contained in the discarded bits raise Error
+          unless all_bits_the_same discarded_bits   
+            $stderr.puts %{Error using hex=#{text}, format is #{@format.width}, truncated data is #{discarded_bits}
+  The MSBs seem to contain data they are not just 0 or 1 padded}
+          end
+        end
 
         @source    = binary_to_float( set_int, set_frac )
         @quantised = @source
