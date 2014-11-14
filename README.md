@@ -1,7 +1,7 @@
 FixedPoint
 ============
 
-For modeling fixed point signed and unsigned data types and having nice function for printing hex and binary forms.
+Ruby gem for modelling fixed point signed and unsigned data types with methods for nicely displaying hex and binary forms.
 
 Install
 -------
